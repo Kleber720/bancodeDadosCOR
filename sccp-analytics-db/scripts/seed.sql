@@ -92,3 +92,4 @@ ORDER BY e.gol DESC, e.assistencia DESC;
 SELECT * FROM vw_estatisticas_clube;
 
 SELECT * FROM vw_desempenho_jogadores;
+
