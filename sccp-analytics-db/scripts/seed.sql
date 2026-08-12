@@ -7,8 +7,6 @@ INSERT INTO jogadores (nome, posicao, numero_camisa) VALUES
 ('Felipe Longo', 'Goleiro', 40),
 ('Kauê', 'Goleiro', 51),
 ('Matheus Donelli', 'Goleiro', 32),
-
-
 ('Matheuzinho', 'Lateral Direito', 2),
 ('Gabriel Paulista', 'Zagueiro', 3),
 ('João Pedro Tchoca', 'Zagueiro', 4),
@@ -72,22 +70,8 @@ INSERT INTO estatisticas_clube (jogos, vitorias, derrotas, empates, gols, gols_s
 VALUES (44, 19, 11, 14, 50, 36);
 
 SELECT * FROM estatisticas_jogador;
+
 SELECT COUNT(*) AS total_jogadores_cadastrados FROM jogadores;
-
-USE sccp_db;
-
-
-SELECT 
-    j.nome,
-    j.posicao,
-    j.numero_camisa,
-    e.gol,
-    e.assistencia,
-    e.chances_criadas,
-    (e.gol + e.assistencia) AS participacoes_em_gols
-FROM jogadores j
-JOIN estatisticas_jogador e ON j.id = e.id_jogador
-ORDER BY e.gol DESC, e.assistencia DESC;
 
 SELECT * FROM vw_estatisticas_clube;
 
