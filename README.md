@@ -2,121 +2,90 @@
 
 ![SQL](https://img.shields.io/badge/SQL-2563EB?style=flat-square) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
 
-## Visão Geral
-Este projeto consiste no desenvolvimento de um banco de dados relacional e camadas de visualização de dados voltados à análise de desempenho do elenco do Sport Club Corinthians Paulista na temporada 2026. 
+**Main portfolio project — relational database and SQL analytics.**
 
-O objetivo principal é demonstrar o ciclo completo de dados: desde o levantamento das regras de negócio, modelagem conceitual e física na 3ª Forma Normal (3FN), até o povoamento e a criação de visões analíticas (`Views`) otimizadas para consumo por ferramentas de Business Intelligence (BI).
+A database project focused on Sport Club Corinthians Paulista players and club performance statistics for the 2026 season. It covers relational modeling, data population, referential integrity, and analytical views.
 
----
+## Data model
 
-## Estrutura do Banco de Dados
+- `jogadores` — player names, positions, and shirt numbers.
+- `estatisticas_jogador` — goals, assists, and chances created, linked to each player.
+- `estatisticas_clube` — matches, wins, draws, losses, and goals for and against.
 
-### Diagrama Entidade-Relacionamento (DER)
+The model uses primary keys, a foreign key between player statistics and players, and default values for numerical statistics.
 
 ```mermaid
 erDiagram
-    JOGADORES ||--o{ ESTATISTICAS_JOGADOR : "possui"
-    
-    JOGADORES {
-        int id PK "AUTO_INCREMENT"
-        string nome "NOT NULL"
-        string posicao
+    jogadores ||--o{ estatisticas_jogador : has
+    jogadores {
+        int id PK
+        varchar nome
+        varchar posicao
         int numero_camisa
     }
-
-    ESTATISTICAS_JOGADOR {
-        int id_estatisticas PK "AUTO_INCREMENT"
-        int id_jogador FK "NOT NULL"
-        int gol "DEFAULT 0"
-        int assistencia "DEFAULT 0"
-        int chances_criadas "DEFAULT 0"
+    estatisticas_jogador {
+        int id_estatisticas PK
+        int id_jogador FK
+        int gol
+        int assistencia
+        int chances_criadas
     }
-
-    ESTATISTICAS_CLUBE {
-        int id PK "AUTO_INCREMENT"
-        int jogos "DEFAULT 0"
-        int vitorias "DEFAULT 0"
-        int derrotas "DEFAULT 0"
-        int empates "DEFAULT 0"
-        int gols "DEFAULT 0"
-        int gols_sofridos "DEFAULT 0"
+    estatisticas_clube {
+        int id PK
+        int jogos
+        int vitorias
+        int derrotas
+        int empates
+        int gols
+        int gols_sofridos
     }
 ```
 
----
+## Analytical views
 
-## Estrutura dos Scripts e Arquivos
+- **`vw_desempenho_jogadores`** joins players and their statistics, calculating direct goal contributions as goals plus assists.
+- **`vw_estatisticas_clube`** calculates goal difference and the percentage of available points earned.
+
+## Repository structure
 
 ```text
 .
 ├── sccp-analytics-db/
 │   └── scripts/
-│   ├── schema.sql        -- Criação do banco de dados, tabelas e restrições
-│   ├── seed.sql          -- Inserção dos dados do elenco e estatísticas
-│   └── view.sql         -- Construção das Views de análise de desempenho
-└── README.md                -- Documentação técnica do projeto
+│       ├── schema.sql   # Database, tables, and constraints
+│       ├── seed.sql     # Initial player and statistics data
+│       └── view.sql     # Analytical views
+└── README.md
 ```
 
----
+## Run locally
 
-## Recursos e Modelagem SQL
+Requirements: a MySQL server and a SQL client such as MySQL Workbench or the MySQL command-line client.
 
-### 1. Modelagem Relacional e Integridade Referencial
-O banco foi modelado garantindo a integridade dos dados por meio do uso de Chaves Primárias (`PRIMARY KEY`), Chaves Estrangeiras (`FOREIGN KEY`) com restrição `NOT NULL`, e atribuição de valores padrão (`DEFAULT 0`) para prevenção de valores nulos em cálculos agregados.
+```sh
+git clone https://github.com/Kleber720/bancodeDadosCOR.git
+cd bancodeDadosCOR
+mysql -u root -p
+```
 
-### 2. Camada Analítica (Views)
-Foram desenvolvidas visões para abstrair a complexidade de consultas e entregar dados prontos para a camada de visualização:
+From the MySQL client, run the scripts in this order:
 
-* **`vw_desempenho_jogadores`**: Executa o relacionamento (`JOIN`) entre as tabelas de atletas e estatísticas individuais, calculando dinamicamente a métrica de participações diretas em gols (`gols + assistências`).
-* **`vw_estatisticas_clube`**: Consolida os dados do clube, realizando os cálculos de **Saldo de Gols** (`gols_pro - gols_sofridos`) e a taxa de **Aproveitamento de Pontos (%)** segundo a fórmula oficial do futebol.
+```sql
+SOURCE sccp-analytics-db/scripts/schema.sql;
+SOURCE sccp-analytics-db/scripts/seed.sql;
+SOURCE sccp-analytics-db/scripts/view.sql;
 
----
+SELECT * FROM vw_desempenho_jogadores LIMIT 10;
+SELECT * FROM vw_estatisticas_clube;
+```
 
-## Como Executar o Projeto
+## Technologies and skills
 
-### Pré-requisitos
-* MySQL Server 8.0 ou superior (ou container Docker com MySQL).
-* Cliente SQL (VS Code com extensão Database Client, DBeaver ou MySQL Workbench).
+SQL, MySQL, relational modeling, referential integrity, joins, analytical views, Mermaid diagrams, and Git/GitHub.
 
-### Passo a Passo
-
-1. Clone o repositório para o seu ambiente local:
-   ```bash
-   git clone https://github.com/Kleber720/bancodeDadosCOR.git
-   cd bancodeDadosCOR
-   ```
-
-2. Execute o script de criação do schema:
-   ```sql
-   SOURCE sccp-analytics-db/scripts/schema.sql;
-   ```
-
-3. Execute o script de povoamento inicial (Seeding):
-   ```sql
-   SOURCE sccp-analytics-db/scripts/seed.sql;
-   ```
-
-4. Crie as Views analíticas:
-   ```sql
-   SOURCE sccp-analytics-db/scripts/view.sql;
-   ```
-
-5. Valide a instalação consultando a visão consolidada de atletas:
-   ```sql
-   SELECT * FROM vw_desempenho_jogadores LIMIT 10;
-   ```
-
----
-
-## Tecnologias Utilizadas
-
-* **Linguagem DDL/DML:** SQL (ANSI / MySQL 8.0 dialects).
-* **Modelagem:** Mermaid.js.
-* **IDE/Ambiente:** Visual Studio Code.
-* **Controle de Versão:** Git e GitHub.
-
+The SQL identifiers retain their original Portuguese names to match the source scripts.
 
 
 ---
 
-[← Portfólio de Kleber Amaro](https://github.com/Kleber720) · [Todos os repositórios](https://github.com/Kleber720?tab=repositories)
+[Kleber Amaro’s portfolio](https://github.com/Kleber720) · [All repositories](https://github.com/Kleber720?tab=repositories)
