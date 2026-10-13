@@ -1,5 +1,7 @@
 # SCCP Data Analytics & Database Project
 
+![SQL](https://img.shields.io/badge/SQL-2563EB?style=flat-square) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
+
 ## Visão Geral
 Este projeto consiste no desenvolvimento de um banco de dados relacional e camadas de visualização de dados voltados à análise de desempenho do elenco do Sport Club Corinthians Paulista na temporada 2026. 
 
@@ -47,12 +49,11 @@ erDiagram
 
 ```text
 .
-├── scripts/
-│   ├── 01_schema.sql        -- Criação do banco de dados, tabelas e restrições
-│   ├── 02_seed.sql          -- Inserção dos dados do elenco e estatísticas
-│   └── 03_views.sql         -- Construção das Views de análise de desempenho
-├── docs/
-│   └── diagrama.md          -- Representação técnica da modelagem
+├── sccp-analytics-db/
+│   └── scripts/
+│   ├── schema.sql        -- Criação do banco de dados, tabelas e restrições
+│   ├── seed.sql          -- Inserção dos dados do elenco e estatísticas
+│   └── view.sql         -- Construção das Views de análise de desempenho
 └── README.md                -- Documentação técnica do projeto
 ```
 
@@ -81,22 +82,23 @@ Foram desenvolvidas visões para abstrair a complexidade de consultas e entregar
 
 1. Clone o repositório para o seu ambiente local:
    ```bash
-   git clone [https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git](https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git)
+   git clone https://github.com/Kleber720/bancodeDadosCOR.git
+   cd bancodeDadosCOR
    ```
 
 2. Execute o script de criação do schema:
    ```sql
-   SOURCE scripts/01_schema.sql;
+   SOURCE sccp-analytics-db/scripts/schema.sql;
    ```
 
 3. Execute o script de povoamento inicial (Seeding):
    ```sql
-   SOURCE scripts/02_seed.sql;
+   SOURCE sccp-analytics-db/scripts/seed.sql;
    ```
 
 4. Crie as Views analíticas:
    ```sql
-   SOURCE scripts/03_views.sql;
+   SOURCE sccp-analytics-db/scripts/view.sql;
    ```
 
 5. Valide a instalação consultando a visão consolidada de atletas:
@@ -113,3 +115,8 @@ Foram desenvolvidas visões para abstrair a complexidade de consultas e entregar
 * **IDE/Ambiente:** Visual Studio Code.
 * **Controle de Versão:** Git e GitHub.
 
+
+
+---
+
+[← Portfólio de Kleber Amaro](https://github.com/Kleber720) · [Todos os repositórios](https://github.com/Kleber720?tab=repositories)
